@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <!-- Google Fonts - Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="calculator-container">
+        <header class="calc-header">
+            <button id="history-toggle" class="icon-btn" aria-label="Toggle History" title="View History">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Display Area -->
+        <div class="display-container">
+            <div id="display-history" class="display-history"></div>
+            <div id="display-current" class="display-current">0</div>
+        </div>
+
+        <!-- Keypad Area -->
+        <div class="keypad">
+            <!-- Row 1 -->
+            <button class="key action-key" data-key="Clear" id="key-clear">C</button>
+            <button class="key action-key" data-key="Backspace" aria-label="Backspace">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                    <line x1="18" y1="9" x2="12" y2="15"></line>
+                    <line x1="12" y1="9" x2="18" y2="15"></line>
+                </svg>
+            </button>
+            <button class="key action-key" data-key="%">%</button>
+            <button class="key operator-key" data-key="/">÷</button>
+
+            <!-- Row 2 -->
+            <button class="key number-key" data-key="7">7</button>
+            <button class="key number-key" data-key="8">8</button>
+            <button class="key number-key" data-key="9">9</button>
+            <button class="key operator-key" data-key="*">×</button>
+
+            <!-- Row 3 -->
+            <button class="key number-key" data-key="4">4</button>
+            <button class="key number-key" data-key="5">5</button>
+            <button class="key number-key" data-key="6">6</button>
+            <button class="key operator-key" data-key="-">−</button>
+
+            <!-- Row 4 -->
+            <button class="key number-key" data-key="1">1</button>
+            <button class="key number-key" data-key="2">2</button>
+            <button class="key number-key" data-key="3">3</button>
+            <button class="key operator-key" data-key="+">+</button>
+
+            <!-- Row 5 -->
+            <button class="key number-key double-width" data-key="0">0</button>
+            <button class="key number-key" data-key=".">.</button>
+            <button class="key equals-key" data-key="=" id="key-equals">=</button>
+        </div>
+
+        <!-- History Drawer -->
+        <div id="history-drawer" class="history-drawer">
+            <div class="history-drawer-header">
+                <h3>History</h3>
+                <button id="clear-history" class="icon-btn text-danger" title="Clear History">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="history-list" class="history-list">
+                <!-- Dynamically populated -->
+                <div class="empty-history-msg">No history yet</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

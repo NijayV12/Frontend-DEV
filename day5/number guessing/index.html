@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <!-- Google Fonts - Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Guess The Number</h1>
+        <p class="subtitle">We have selected a random number between <strong>1</strong> and <strong>100</strong>. Can you guess it?</p>
+        
+        <div class="input-section">
+            <input type="number" id="guess-input" placeholder="Enter your guess" min="1" max="100" autofocus>
+            <button id="guess-btn">Guess</button>
+        </div>
+
+        <div class="message-section">
+            <p id="feedback-msg">Start guessing to see hints...</p>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-box">
+                <span class="stat-label">Attempts:</span>
+                <span id="attempts-count" class="stat-value">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Previous Guesses:</span>
+                <span id="prev-guesses" class="stat-value">-</span>
+            </div>
+        </div>
+
+        <button id="restart-btn" class="hidden">Play Again</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+/* === Beginner-Level CSS Stylesheet === */
+
+/* Style the body (the entire page) */
+body {
+    background-color: #1e1e24; /* Dark grey-purple background */
+    color: #ffffff;            /* White text color */
+    font-family: 'Outfit', Arial, sans-serif; /* Modern font with Arial backup */
+    display: flex;             /* Flexbox layout to center the content */
+    justify-content: center;   /* Center horizontally */
+    align-items: center;       /* Center vertically */
+    min-height: 100vh;         /* Take up full window height */
+    margin: 0;                 /* Remove default browser margin */
+}
+
+/* Style the main container box */
+.game-container {
+    background-color: #2a2a35; /* Slightly lighter grey-purple card */
+    border: 2px solid #3f3f4e; /* Clean border around the card */
+    border-radius: 15px;       /* Rounded corners */
+    width: 90%;                /* Responsive width for mobile screens */
+    max-width: 400px;          /* Maximum width on larger screens */
+    padding: 30px;             /* Space inside the card */
+    text-align: center;        /* Center all text inside the card */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Smooth shadow behind the card */
+}
+
+/* Title text */
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #c084fc;            /* Soft purple color */
+}
+
+/* Subtitle text */
+.subtitle {
+    font-size: 15px;
+    color: #a1a1aa;            /* Soft grey text color */
+    line-height: 1.5;          /* Space between text lines */
+    margin-bottom: 25px;
+}
+
+/* Layout for the input section (input and button side-by-side) */
+.input-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;                 /* Space between input and button */
+    margin-bottom: 20px;
+}
+
+/* The guess number input field */
+#guess-input {
+    width: 60%;
+    padding: 10px;
+    border: 2px solid #3f3f4e; /* Matching card border */
+    border-radius: 8px;        /* Slightly rounded corners */
+    font-size: 16px;
+    background-color: #1e1e24; /* Darker inside background */
+    color: #ffffff;            /* White text */
+    outline: none;             /* Remove the default blue outline on click */
+    text-align: center;        /* Center the number inside input */
+}
+
+/* When the user clicks into the input field to type */
+#guess-input:focus {
+    border-color: #c084fc;     /* Change border to purple when active */
+}
+
+/* The Guess submit button */
+#guess-btn {
+    background-color: #c084fc; /* Purple background */
+    color: #ffffff;            /* White text */
+    border: none;              /* Remove default button border */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;           /* Show pointer hand on hover */
+}
+
+/* When hovering over the Guess button */
+#guess-btn:hover {
+    background-color: #a855f7; /* Darker purple on hover */
+}
+
+/* When clicking the Guess button */
+#guess-btn:active {
+    transform: scale(0.96);    /* Press-in animation effect */
+}
+
+/* Section showing hints or success messages */
+.message-section {
+    margin-bottom: 25px;
+    font-size: 18px;
+    min-height: 30px;          /* Prevent layout from jumping when text changes */
+}
+
+/* Class applied when the guess is too low */
+.too-low {
+    color: #fbbf24;            /* Soft yellow warning text */
+}
+
+/* Class applied when the guess is too high */
+.too-high {
+    color: #f87171;            /* Soft red warning text */
+}
+
+/* Class applied when input validation warning occurs */
+.warning {
+    color: #fb923c;            /* Soft orange color for input errors */
+}
+
+/* Class applied when the user wins */
+.correct {
+    color: #34d399;            /* Green success text */
+    font-weight: bold;
+}
+
+/* Section containing game attempts and previous guesses */
+.stats-section {
+    border-top: 1px solid #3f3f4e; /* Line separating input from stats */
+    padding-top: 20px;
+    margin-bottom: 25px;
+}
+
+/* Each statistics box */
+.stat-box {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Label for stats (Attempts:, Previous Guesses:) */
+.stat-label {
+    color: #a1a1aa;            /* Soft grey */
+}
+
+/* Value of stats (numbers, guess list) */
+.stat-value {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* The Play Again button */
+#restart-btn {
+    width: 100%;
+    background-color: #34d399; /* Green background */
+    color: #ffffff;            /* White text */
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Hovering over Play Again button */
+#restart-btn:hover {
+    background-color: #10b981; /* Darker green on hover */
+}
+
+/* Clicking Play Again button */
+#restart-btn:active {
+    transform: scale(0.98);    /* Press-in animation effect */
+}
+
+/* Helper class to hide the Play Again button initially */
+.hidden {
+    display: none;
+}
