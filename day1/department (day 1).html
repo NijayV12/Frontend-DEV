@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & DS Department | HIT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #022c22; 
+            --bg-body: #040d0e;
+            --bg-surface: #0a1f1d;
+            --bg-card: #0d2825;
+            --text-primary: #f2f9f9;
+            --text-secondary: #8fa8a6;
+            --accent: #10b981; 
+            --accent-glow: rgba(16, 185, 129, 0.15);
+            --accent-border: rgba(16, 185, 129, 0.3);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 3rem 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem;
+        }
+
+        
+        .hero-banner {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            height: 350px;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .banner-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4) contrast(1.1);
+            transition: var(--transition-smooth);
+        }
+
+        .hero-banner:hover .banner-img {
+            transform: scale(1.03);
+            filter: brightness(0.5) contrast(1.1);
+        }
+
+        .hero-overlay {
+            position: relative;
+            z-index: 10;
+            padding: 2.5rem;
+            width: 100%;
+            background: linear-gradient(to top, rgba(10, 31, 29, 0.95) 40%, rgba(10, 31, 29, 0) 100%);
+            backdrop-filter: blur(2px);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .college-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .dept-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 60%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        
+        .about-section {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 0.75rem;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .about-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .faculty-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: var(--transition-smooth);
+        }
+
+        .faculty-card:hover {
+            border-color: var(--accent-border);
+            background-color: var(--bg-card);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .faculty-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .faculty-card:hover .faculty-avatar {
+            border-color: var(--accent);
+            background-color: var(--accent-glow);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .faculty-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .faculty-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .faculty-role {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .faculty-specialty {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            background-color: var(--accent-glow);
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            width: fit-content;
+            margin-top: 0.25rem;
+        }
+
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .subject-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .subject-card:hover {
+            border-color: var(--accent-border);
+            background-color: var(--bg-card);
+            transform: translateX(5px);
+        }
+
+        .subject-icon {
+            font-size: 1.3rem;
+            color: var(--accent);
+            width: 24px;
+            text-align: center;
+        }
+
+        .subject-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-banner {
+                height: 250px;
+            }
+
+            .hero-overlay {
+                padding: 1.5rem;
+            }
+
+            .dept-title {
+                font-size: 1.75rem;
+            }
+
+            .about-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        
+        <header class="hero-banner">
+            <img src="../department_banner.png" alt="HIT Campus Department Banner" class="banner-img">
+            <div class="hero-overlay">
+                <span class="college-tag">Hindusthan Institute of Technology</span>
+                <h1 class="dept-title">Artificial Intelligence & Data Science</h1>
+            </div>
+        </header>
+
+        
+        <section class="about-section">
+            <div class="section-header">
+                <h2 class="section-title">About the Department</h2>
+            </div>
+            <p class="about-text">
+                The Artificial Intelligence and Data Science Department is a premier academic hub dedicated to fostering expertise in data-driven decision systems and intelligent agents. We empower computer science undergraduates with strong coding structures, deep database insights, core software engineering design patterns, and full-stack development skills necessary to pioneer innovations in today's digital landscape.
+            </p>
+        </section>
+
+        
+        <section>
+            <div class="section-header">
+                <h2 class="section-title">Distinguished Faculty</h2>
+            </div>
+            <div class="faculty-grid">
+                
+                <div class="faculty-card">
+                    <div class="faculty-avatar">P</div>
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">Mr. Periyasamy</h3>
+                        <p class="faculty-role">Professor</p>
+                        <span class="faculty-specialty">Machine Learning</span>
+                    </div>
+                </div>
+
+                
+                <div class="faculty-card">
+                    <div class="faculty-avatar">R</div>
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">Mr. Ramasamy</h3>
+                        <p class="faculty-role">Assistant Professor</p>
+                        <span class="faculty-specialty">Deep Learning</span>
+                    </div>
+                </div>
+
+                
+                <div class="faculty-card">
+                    <div class="faculty-avatar">M</div>
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">Mr. Mahesh</h3>
+                        <p class="faculty-role">Lecturer</p>
+                        <span class="faculty-specialty">Data Structures</span>
+                    </div>
+                </div>
+
+                
+                <div class="faculty-card">
+                    <div class="faculty-avatar">M</div>
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">Mr. Maran</h3>
+                        <p class="faculty-role">Lecturer</p>
+                        <span class="faculty-specialty">Database Management</span>
+                    </div>
+                </div>
+
+                
+                <div class="faculty-card">
+                    <div class="faculty-avatar">S</div>
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">Mr. Siva</h3>
+                        <p class="faculty-role">Lecturer</p>
+                        <span class="faculty-specialty">Web Architectures</span>
+                    </div>
+                </div>
+
+                
+                <div class="faculty-card">
+                    <div class="faculty-avatar">N</div>
+                    <div class="faculty-info">
+                        <h3 class="faculty-name">Mrs. Nisha</h3>
+                        <p class="faculty-role">Lecturer</p>
+                        <span class="faculty-specialty">Natural Language Proc.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section>
+            <div class="section-header">
+                <h2 class="section-title">Core Academic Subjects</h2>
+            </div>
+            <div class="subjects-grid">
+                <div class="subject-card">
+                    <i class="fa-solid fa-square-terminal subject-icon"></i>
+                    <span class="subject-name">Programming in C</span>
+                </div>
+                <div class="subject-card">
+                    <i class="fa-brands fa-java subject-icon"></i>
+                    <span class="subject-name">Java Programming</span>
+                </div>
+                <div class="subject-card">
+                    <i class="fa-solid fa-server subject-icon"></i>
+                    <span class="subject-name">Database Management Systems</span>
+                </div>
+                <div class="subject-card">
+                    <i class="fa-solid fa-globe subject-icon"></i>
+                    <span class="subject-name">Web Technology</span>
+                </div>
+                <div class="subject-card">
+                    <i class="fa-solid fa-sitemap subject-icon"></i>
+                    <span class="subject-name">Data Structures</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
+

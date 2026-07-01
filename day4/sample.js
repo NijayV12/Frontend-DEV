@@ -1,0 +1,10 @@
+a = 10;
+b = 20;
+c = a + b;
+d = 30;
+console.log("the value of a is", a);
+console.log("the value of b is", b);
+console.log("the value of c is", c);
+console.log(c == 30 && d == 30);
+console.log(c == 30 || d == 30);
+console.log(typeof a);

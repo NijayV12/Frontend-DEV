@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <title>Hello, World!</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <input type="text" placeholder="Enter Your Name" id="uname" required><br><br>
+    <span id="span1"></span><br>
+    <input type="email" placeholder="Enter Email Id" id="uemail"><br><br>
+    <input type="password" placeholder="Enter Password" id="pass"><br><br>
+    <button onclick="validate()">Submit</button>
+</body>
+<script>
+    function validate() {
+        let name = document.getElementById("uname").value;
+        if (name === "") {
+            document.getElementById("span1").innerHTML = "Please Enter the name";
+        }
+        let email = document.getElementById("uemail").value;
+        if (!email.includes("@") || email === "") {
+            alert("Invalid Email");
+        }
+        let pass = document.getElementById("pass").value;
+        if (pass.length > 8) {
+            alert("Password should be more than 8 Characters");
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIT Course Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #0c0a09;
+            --bg-surface: #1c1917;
+            --bg-card: #292524;
+            --text-primary: #fafaf9;
+            --text-secondary: #a8a29e;
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.15);
+            --accent-border: rgba(245, 158, 11, 0.3);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 3rem 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .college-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .catalog-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 60%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .catalog-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        
+        .catalog-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            border-radius: 12px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-border);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent);
+            color: var(--bg-main);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            transition: var(--transition-smooth);
+        }
+
+        .course-card:hover {
+            border-color: var(--accent-border);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-icon-badge {
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--accent);
+            transition: var(--transition-smooth);
+        }
+
+        .course-card:hover .course-icon-badge {
+            background-color: var(--accent);
+            color: var(--bg-main);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .course-duration-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+
+        .course-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .course-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .course-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            min-height: 4.5rem;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .course-price-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .course-price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            border-left: 4px solid var(--accent);
+            padding-left: 0.75rem;
+        }
+
+        .section-outcomes {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 12px;
+        }
+
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .outcome-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: var(--transition-smooth);
+        }
+
+        .outcome-item:hover {
+            border-color: var(--accent-border);
+        }
+
+        .outcome-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .outcome-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        
+        .comparison-section {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 12px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th {
+            background-color: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table td {
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .outcomes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .catalog-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-tabs {
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .filter-btn {
+                flex: 1;
+                text-align: center;
+                padding: 0.5rem 0.5rem;
+            }
+
+            .comparison-section, .section-outcomes {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        
+        <header>
+            <span class="college-tag">Hindusthan Institute of Technology</span>
+            <h1 class="catalog-title">Available Courses</h1>
+            <p class="catalog-desc">Enhance your skillset with professional academic programs designed for career readiness.</p>
+        </header>
+
+        
+        <div class="catalog-controls">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search courses by name or details...">
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="filterCategory('all', this)">All</button>
+                <button class="filter-btn" onclick="filterCategory('programming', this)">Programming</button>
+                <button class="filter-btn" onclick="filterCategory('web', this)">Web Dev</button>
+                <button class="filter-btn" onclick="filterCategory('db', this)">Database</button>
+            </div>
+        </div>
+
+        
+        <div class="course-grid" id="courseGrid">
+            
+            <div class="course-card" data-category="programming">
+                <div class="course-header">
+                    <div class="course-icon-badge">
+                        <i class="fa-brands fa-java"></i>
+                    </div>
+                    <span class="course-duration-badge">3 Months</span>
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">Java Programming</h3>
+                    <p class="course-text">Master object-oriented programming (OOP) principles, classes, methods, exception handling, and database connectivity.</p>
+                </div>
+                <div class="course-footer">
+                    <div>
+                        <span class="course-price-label">Fee (INR)</span>
+                        <p class="course-price">₹5,000</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color: var(--accent);"></i>
+                </div>
+            </div>
+
+            
+            <div class="course-card" data-category="programming">
+                <div class="course-header">
+                    <div class="course-icon-badge">
+                        <i class="fa-brands fa-python"></i>
+                    </div>
+                    <span class="course-duration-badge">2 Months</span>
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">Python Scripting</h3>
+                    <p class="course-text">Learn dynamic variable bindings, control structures, data operations, modules, and writing scripts for task automation.</p>
+                </div>
+                <div class="course-footer">
+                    <div>
+                        <span class="course-price-label">Fee (INR)</span>
+                        <p class="course-price">₹4,000</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color: var(--accent);"></i>
+                </div>
+            </div>
+
+            
+            <div class="course-card" data-category="programming">
+                <div class="course-header">
+                    <div class="course-icon-badge">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <span class="course-duration-badge">2 Months</span>
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">C Programming</h3>
+                    <p class="course-text">Build a solid foundation in software memory management, pointers, variables, data structures, and algorithmic logic.</p>
+                </div>
+                <div class="course-footer">
+                    <div>
+                        <span class="course-price-label">Fee (INR)</span>
+                        <p class="course-price">₹3,000</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color: var(--accent);"></i>
+                </div>
+            </div>
+
+            
+            <div class="course-card" data-category="web">
+                <div class="course-header">
+                    <div class="course-icon-badge">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <span class="course-duration-badge">3 Months</span>
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">Web Development</h3>
+                    <p class="course-text">Design and construct beautiful websites. Master semantic HTML5 elements, responsive styling with CSS3, and JavaScript logic.</p>
+                </div>
+                <div class="course-footer">
+                    <div>
+                        <span class="course-price-label">Fee (INR)</span>
+                        <p class="course-price">₹6,000</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color: var(--accent);"></i>
+                </div>
+            </div>
+
+            
+            <div class="course-card" data-category="db">
+                <div class="course-header">
+                    <div class="course-icon-badge">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <span class="course-duration-badge">2 Months</span>
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">Database Management</h3>
+                    <p class="course-text">Understand table relations, relational models, query execution, indexing, normalization, and relational databases (SQL).</p>
+                </div>
+                <div class="course-footer">
+                    <div>
+                        <span class="course-price-label">Fee (INR)</span>
+                        <p class="course-price">₹3,500</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color: var(--accent);"></i>
+                </div>
+            </div>
+        </div>
+
+        
+        <section class="comparison-section">
+            <h2 class="section-title">Course Overview & Pricing</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Duration</th>
+                        <th>Fee (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: var(--text-primary); font-weight: 500;">Java Programming</td>
+                        <td>3 Months</td>
+                        <td style="color: var(--accent); font-weight: 600;">₹5,000</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--text-primary); font-weight: 500;">Python Scripting</td>
+                        <td>2 Months</td>
+                        <td style="color: var(--accent); font-weight: 600;">₹4,000</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--text-primary); font-weight: 500;">C Programming</td>
+                        <td>2 Months</td>
+                        <td style="color: var(--accent); font-weight: 600;">₹3,000</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--text-primary); font-weight: 500;">Web Development</td>
+                        <td>3 Months</td>
+                        <td style="color: var(--accent); font-weight: 600;">₹6,000</td>
+                    </tr>
+                    <tr>
+                        <td style="color: var(--text-primary); font-weight: 500;">Database Management Systems</td>
+                        <td>2 Months</td>
+                        <td style="color: var(--accent); font-weight: 600;">₹3,500</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        
+        <section class="section-outcomes">
+            <h2 class="section-title">Program Learning Outcomes</h2>
+            <div class="outcomes-grid">
+                <div class="outcome-item">
+                    <i class="fa-solid fa-lightbulb outcome-icon"></i>
+                    <p class="outcome-text">Understand core programming syntax, logic flow, and algorithm structures thoroughly.</p>
+                </div>
+                <div class="outcome-item">
+                    <i class="fa-solid fa-puzzle-piece outcome-icon"></i>
+                    <p class="outcome-text">Develop robust computational problem-solving skills to write optimized, clean scripts.</p>
+                </div>
+                <div class="outcome-item">
+                    <i class="fa-solid fa-cubes outcome-icon"></i>
+                    <p class="outcome-text">Build full-stack portfolios: design modern websites and construct operational SQL database schemas.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    
+    <script>
+        let activeCategory = 'all';
+
+        function filterCategory(category, element) {
+            activeCategory = category;
+            
+            // Toggle active classes on buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            filterList();
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', filterList);
+
+        function filterList() {
+            const query = searchInput.value.toLowerCase();
+            const cards = document.querySelectorAll('.course-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('.course-title').textContent.toLowerCase();
+                const desc = card.querySelector('.course-text').textContent.toLowerCase();
+                const category = card.getAttribute('data-category');
+                
+                const matchesSearch = title.includes(query) || desc.includes(query);
+                const matchesCategory = activeCategory === 'all' || category === activeCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
+
