@@ -30,10 +30,14 @@ d:\TR
 │   │   ├── 📄 index.html                 # Calculator layout with fixed Dark Mode theme
 │   │   ├── 📄 style.css                  # Modern calculator UI styling with history drawer
 │   │   └── 📄 script.js                  # Math parsing logic & local storage history
-│   └── 📁 number guessing/               # Beginner-level interactive guessing game
-│       ├── 📄 index.html                 # Game container structure with validation output
-│       ├── 📄 style.css                  # Soft dark-purple clean card stylesheet
-│       └── 📄 script.js                  # Beginner-friendly game loop and inputs verification
+│   ├── 📁 number guessing/               # Beginner-level interactive guessing game
+│   │   ├── 📄 index.html                 # Game container structure with validation output
+│   │   ├── 📄 style.css                  # Soft dark-purple clean card stylesheet
+│   │   └── 📄 script.js                  # Beginner-friendly game loop and inputs verification
+│   └── 📁 to do list/                    # Minimalist To Do List in Calculator theme
+│       ├── 📄 index.html                 # App layout with task input and stats
+│       ├── 📄 style.css                  # Custom styling matching Calculator Zinc theme
+│       └── 📄 script.js                  # Tasks manager with filters and localStorage
 ├── 📁 day6/
 │   └── 📄 Sample.html                    # JavaScript logic sample page
 ├── 📁 day7/
@@ -68,6 +72,13 @@ A responsive calculator designed with a sleek, minimalist dark theme. It handles
 
 ### 4. Number Guessing Game (`day5/number guessing/`)
 An interactive, educational guessing game built with HTML, CSS, and JavaScript. It evaluates guesses, prints attempts history, and gives friendly boundary validation notices.
+
+### 5. Minimalist To Do List (`day5/to do list/`)
+A responsive task manager application built with HTML, CSS, and JavaScript.
+* **Calculator Visual Sync**: Adopts the same sleek, dark grey Zinc theme (`#09090b` and `#18181b`) and Outfit typography as the legacy calculator.
+* **Interactive List Controls**: Supports checkable custom circular checkboxes, quick tasks list filters (All, Active, Completed), and delete/clear operations.
+* **Metrics Trackers**: Prints real-time statistics counters showing active items left and completed tasks count.
+* **LocalStorage Cache**: Syncs state to local browser databases to maintain task lists upon page reloads.
 
 ---
 

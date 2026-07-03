@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <!-- Google Fonts - Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="todo-container">
+        <!-- Header -->
+        <header class="todo-header">
+            <h1>Tasks</h1>
+            <div class="todo-stats">
+                <span id="completed-count">0</span>/<span id="total-count">0</span>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <form id="todo-form" class="todo-input-container">
+            <input type="text" id="todo-input" placeholder="Add a new task..." maxlength="100" required autocomplete="off">
+            <button type="submit" id="todo-add-btn" aria-label="Add Task" title="Add Task">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
+        </form>
+
+        <!-- Filters Section -->
+        <div class="todo-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+
+        <!-- Task List Scroll Area -->
+        <div id="todo-list" class="todo-list">
+            <!-- Dynamically populated task items -->
+            <div class="empty-todo-msg">No tasks yet. Enjoy your day!</div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="todo-footer">
+            <span id="items-left">0 active left</span>
+            <button id="clear-completed" class="clear-btn">Clear Completed</button>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
