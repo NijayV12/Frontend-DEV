@@ -36,27 +36,45 @@ d:\TR
 │       └── 📄 script.js                  # Beginner-friendly game loop and inputs verification
 ├── 📁 day6/
 │   └── 📄 Sample.html                    # JavaScript logic sample page
+├── 📁 day7/
+│   └── 📁 calculator/                    # React & Vite Calculator project
+│       ├── 📁 src/                       # React components, styles, and entries
+│       └── 📄 vite.config.js             # Vite compiler config
+├── 📁 day8/
+│   └── 📁 student-management/            # AI & DS Classroom Portal
+│       ├── 📁 src/                       # Main React components & custom App.css styles
+│       ├── 📁 public/                    # Image assets (portal banner background)
+│       └── 📄 vite.config.js             # Vite compiler config
 └── 🖼️ department_banner.png             # Visual asset image for department banners
 ```
 
 ---
 
-## 🚀 Projects Spotlight (Day 5)
+## 🚀 Projects Spotlight
 
-### 1. Minimal Calculator (`day5/calculator/`)
+### 1. React Calculator (`day7/calculator/`)
+A responsive interactive calculator built in **React** and compiled via **Vite**. Features simple modular styling, custom state management for operands, and basic mathematical evaluations.
+
+### 2. AI & Data Science Classroom Portal (`day8/student-management/`)
+A fully-featured, widescreen workspace portal designed for college-level **Artificial Intelligence & Data Science** (AI & DS) departments. 
+* **Futuristic Cosmic Theme**: Features a custom-styled space background combining neon radial glow lights with a technology coordinate grid pattern.
+* **Glassmorphic Interfaces**: All panels are designed as frosted-glass elements with translucent outline borders and a backdrop filter blur effect (`backdrop-filter: blur(12px)`).
+* **Multi-Tab Workspaces**: Integrated dashboard insights (total students, passing rates, grade distribution charts), student directories, notices feed, enroll forms, and default settings resets.
+* **Neon Metric Accents**: Exam score numbers are colored in real-time based on their respective performance ratings (Emerald Green for A, Indigo for B, Blue for C, Amber for D, and Rose Red for F).
+* **LocalStorage Persistence**: Full database synchronization to cache configurations, student logs, and notice cards.
+
+### 3. Minimal Legacy Calculator (`day5/calculator/`)
 A responsive calculator designed with a sleek, minimalist dark theme. It handles fundamental mathematical calculations, records execution history locally, and lets you copy or recall expressions from a convenient side-drawer.
-* *Update*: The legacy theme changer toggle was removed to provide a unified, highly-polished dark interface.
 
-### 2. Number Guessing Game (`day5/number guessing/`)
-An interactive, educational guessing game built with beginner-level HTML, CSS, and JavaScript. 
-* **Self-Contained Logic**: Selects a random integer between 1 and 100 and evaluates user guesses (Too High, Too Low, Correct) dynamically.
-* **Friendly Warnings**: Clear styling warnings notify the user when input lies outside bounds or is empty.
-* **Stat Trackers**: Displays attempts counter and previous guess history, resetting cleanly upon clicking "Play Again".
-* **Highly Commented**: Code is thoroughly commented for educational purposes, teaching fundamental selectors, event listener triggers, and basic logic.
+### 4. Number Guessing Game (`day5/number guessing/`)
+An interactive, educational guessing game built with HTML, CSS, and JavaScript. It evaluates guesses, prints attempts history, and gives friendly boundary validation notices.
 
 ---
 
 ## 🛠️ Technology Stack
-* **Markup**: Semantic HTML5 structures.
-* **Styling**: Vanilla CSS3 layout elements (Flexbox, custom borders, responsive card viewports).
-* **Programming**: Pure Vanilla ES6 JavaScript (DOM APIs, localStorage, event models).
+* **Framework**: React.js (Day 7, Day 8)
+* **Build Tools**: Vite.js compiler environment
+* **Styling**: Modern CSS3 (Glassmorphism, linear text-gradients, radial overlays, grid systems)
+* **Programming**: Modern ES6+ JavaScript / DOM APIs
+* **Database**: LocalStorage key-value sync for state persistence
+* **Formatting**: Semantic HTML5 structures
