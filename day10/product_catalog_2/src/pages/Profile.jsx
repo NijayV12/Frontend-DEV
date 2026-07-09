@@ -4,8 +4,8 @@ import { formatPrice } from '../utils'
 
 export default function Profile({ pastOrders, onNavigate }) {
   const [profile, setProfile] = useState({
-    name: 'Jane Doe',
-    email: 'jane@example.com',
+    name: 'Nijay V',
+    email: 'nijayv@example.com',
     phone: '+91 98765 43210',
     address: '123 Street, Chennai, TN',
     zip: '600001'

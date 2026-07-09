@@ -102,7 +102,7 @@ export default function Checkout({ cart, onPlaceOrder, onBack }) {
                   type="text" 
                   id="fullName" 
                   name="fullName"
-                  placeholder="e.g. Nijay Kumar"
+                  placeholder="e.g. Nijay V"
                   value={formData.fullName}
                   onChange={handleChange}
                   className={errors.fullName ? 'error' : ''}

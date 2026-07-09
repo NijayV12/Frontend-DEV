@@ -20,6 +20,6 @@ Hi! This is my assignment repository where I track my progress while learning fr
 - React Hooks (`useState`) and state-based page routing
 
 ## 🚀 How to Run the React Apps
-1. Go into any React project folder (like `day10/ECommerce_Store`).
+1. Go into any React project folder (like `day10/product_catalog_2`).
 2. Install packages in terminal: `npm install`
 3. Launch local server: `npm run dev` and click the link!

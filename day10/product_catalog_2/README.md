@@ -33,7 +33,7 @@ Since I am a beginner, this project was a huge step up for me. Here's what I lea
 
 ## 🛠️ How to Run locally
 
-1. Open your terminal in this folder (`day10/ECommerce_Store`).
+1. Open your terminal in this folder (`day10/product_catalog_2`).
 2. Install the packages:
    ```bash
    npm install
