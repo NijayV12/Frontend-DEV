@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import employeeService from "./services/employeeService";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeForm from "./components/EmployeeForm";
+import PayAnalyticsPage from "./components/PayAnalyticsPage";
+import PermissionsPage from "./components/PermissionsPage";
 import "./App.css";
 
 function App() {
@@ -9,18 +11,15 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Navigation tab state
+  const [activeTab, setActiveTab] = useState("directory");
+
   // Modals / Overlays
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [detailEmployee, setDetailEmployee] = useState(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // App Theme Mode
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    return saved ? saved === "dark" : true; // Default dark
-  });
 
   // Fetch employees on component mount
   const fetchEmployees = async () => {
@@ -41,16 +40,11 @@ function App() {
     fetchEmployees();
   }, []);
 
-  // Theme effect
+  // Force dark theme on mount
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark-theme");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark-theme");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
+    document.documentElement.classList.add("dark-theme");
+    localStorage.setItem("theme", "dark");
+  }, []);
 
   // Save employee handler (creates or updates)
   const handleSaveEmployee = async (formData) => {
@@ -114,6 +108,7 @@ function App() {
 
   // Calculate tenure string (months or years)
   const calculateTenure = (joiningDate) => {
+    if (!joiningDate) return "N/A";
     const join = new Date(joiningDate);
     const now = new Date();
     const diffTime = Math.abs(now - join);
@@ -133,8 +128,8 @@ function App() {
 
   // Calculate annual salary and estimated tax (simple slab)
   const calculateFinancials = (monthlySalary) => {
-    const annual = monthlySalary * 12;
-    // Simple mock tax calculation (15% avg tax above 7L, etc.)
+    const salary = Number(monthlySalary) || 0;
+    const annual = salary * 12;
     let tax = 0;
     if (annual > 1500000) {
       tax = annual * 0.25;
@@ -152,13 +147,8 @@ function App() {
     };
   };
 
-  const getAvatarBg = (name) => {
-    const colors = ["#4f46e5", "#0891b2", "#0d9488", "#059669", "#ca8a04", "#db2777", "#9333ea"];
-    let sum = 0;
-    for (let i = 0; i < name.length; i++) {
-      sum += name.charCodeAt(i);
-    }
-    return colors[sum % colors.length];
+  const getAvatarBg = () => {
+    return "var(--bg-tertiary)";
   };
 
   return (
@@ -166,7 +156,9 @@ function App() {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <div className="brand-logo">🌌</div>
+          <svg className="brand-logo-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--primary)" }}>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
           <div className="brand-meta">
             <span className="brand-name">ApexCorp</span>
             <span className="brand-slogan">Portal v2.0</span>
@@ -175,19 +167,48 @@ function App() {
 
         <nav className="sidebar-nav">
           <div className="nav-section-label">Core Modules</div>
-          <a href="#" className="nav-item active">
-            <span className="nav-icon">👤</span> Employee Directory
+          <a
+            href="#"
+            className={`nav-item ${activeTab === "directory" ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveTab("directory");
+            }}
+          >
+            <svg className="nav-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Employee Directory
           </a>
-          <a href="#" className="nav-item" onClick={(e) => { e.preventDefault(); alert("Financial Analytics module is coming soon!"); }}>
-            <span className="nav-icon">📊</span> Pay Analytics
+          <a
+            href="#"
+            className={`nav-item ${activeTab === "analytics" ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveTab("analytics");
+            }}
+          >
+            <svg className="nav-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            Pay Analytics
           </a>
-          <a href="#" className="nav-item" onClick={(e) => { e.preventDefault(); alert("Access Control module is coming soon!"); }}>
-            <span className="nav-icon">🔐</span> Permissions
-          </a>
-
-          <div className="nav-section-label font-secondary">System Settings</div>
-          <a href="#" className="nav-item" onClick={(e) => { e.preventDefault(); alert("Portal Settings are under construction."); }}>
-            <span className="nav-icon">⚙️</span> Configuration
+          <a
+            href="#"
+            className={`nav-item ${activeTab === "permissions" ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveTab("permissions");
+            }}
+          >
+            <svg className="nav-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+            </svg>
+            Permissions
           </a>
         </nav>
 
@@ -216,22 +237,10 @@ function App() {
           </div>
 
           <div className="header-actions">
-            {/* Theme Toggle Button */}
-            <button
-              className="theme-toggle-btn"
-              onClick={() => setDarkMode(!darkMode)}
-              title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {darkMode ? "☀️ Light" : "🌙 Dark"}
-            </button>
-
-            <div className="header-divider"></div>
-
-            {/* Profile badge */}
             <div className="admin-profile">
-              <div className="admin-avatar">AD</div>
+              <div className="admin-avatar">NV</div>
               <div className="admin-meta">
-                <span className="admin-name">Admin Portal</span>
+                <span className="admin-name">Nijay V</span>
                 <span className="admin-role">System Manager</span>
               </div>
             </div>
@@ -254,7 +263,7 @@ function App() {
                 Retry Connection
               </button>
             </div>
-          ) : (
+          ) : activeTab === "directory" ? (
             <EmployeeList
               employees={employees}
               onEdit={handleEditClick}
@@ -262,7 +271,11 @@ function App() {
               onView={handleViewClick}
               onAddClick={handleAddNewClick}
             />
-          )}
+          ) : activeTab === "analytics" ? (
+            <PayAnalyticsPage employees={employees} />
+          ) : activeTab === "permissions" ? (
+            <PermissionsPage employees={employees} />
+          ) : null}
         </div>
       </main>
 
@@ -294,17 +307,17 @@ function App() {
                 className="drawer-avatar"
                 style={{ backgroundColor: getAvatarBg(detailEmployee.name) }}
               >
-                {detailEmployee.name
+                {(detailEmployee.name || "U")
                   .split(" ")
                   .map((n) => n[0])
                   .slice(0, 2)
                   .join("")
                   .toUpperCase()}
               </div>
-              <h2 className="drawer-name">{detailEmployee.name}</h2>
-              <span className="drawer-id-badge">{detailEmployee.id}</span>
-              <p className="drawer-role-tag">{detailEmployee.role}</p>
-              <span className="drawer-dept-badge">{detailEmployee.department}</span>
+              <h2 className="drawer-name">{detailEmployee.name || "Unnamed"}</h2>
+              <span className="drawer-id-badge">ID: {detailEmployee.id}</span>
+              <p className="drawer-role-tag">{detailEmployee.role || "Team Member"}</p>
+              <span className="drawer-dept-badge">{detailEmployee.department || "General"}</span>
             </div>
 
             <div className="drawer-content">
@@ -312,22 +325,24 @@ function App() {
               <div className="drawer-info-grid">
                 <div className="info-item">
                   <span className="info-label">Email Address</span>
-                  <span className="info-val">{detailEmployee.email}</span>
+                  <span className="info-val">{detailEmployee.email || "N/A"}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Current Status</span>
-                  <span className={`info-val status-text-${detailEmployee.status.toLowerCase().replace(" ", "-")}`}>
-                    {detailEmployee.status}
+                  <span className={`info-val status-text-${(detailEmployee.status || "Active").toLowerCase().replace(" ", "-")}`}>
+                    {detailEmployee.status || "Active"}
                   </span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Joining Date</span>
                   <span className="info-val">
-                    {new Date(detailEmployee.joiningDate).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric"
-                    })}
+                    {detailEmployee.joiningDate
+                      ? new Date(detailEmployee.joiningDate).toLocaleDateString("en-IN", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric"
+                        })
+                      : "N/A"}
                   </span>
                 </div>
                 <div className="info-item">
@@ -348,7 +363,7 @@ function App() {
                           style: "currency",
                           currency: "INR",
                           maximumFractionDigits: 0
-                        }).format(detailEmployee.salary)}
+                        }).format(detailEmployee.salary || 0)}
                       </span>
                     </div>
                     <div className="info-item">
@@ -363,7 +378,7 @@ function App() {
                     </div>
                     <div className="info-item">
                       <span className="info-label">Estimated Tax Ded.</span>
-                      <span className="info-val text-red">
+                      <span className="info-val text-red" style={{ color: "#ef4444" }}>
                         {new Intl.NumberFormat("en-IN", {
                           style: "currency",
                           currency: "INR",
@@ -373,7 +388,7 @@ function App() {
                     </div>
                     <div className="info-item">
                       <span className="info-label">Estimated Net Take-Home</span>
-                      <span className="info-val text-emerald">
+                      <span className="info-val text-emerald" style={{ color: "#10b981" }}>
                         {new Intl.NumberFormat("en-IN", {
                           style: "currency",
                           currency: "INR",
@@ -408,7 +423,7 @@ function App() {
             <div className="confirm-icon">⚠️</div>
             <h2 className="confirm-title">Delete Employee Record</h2>
             <p className="confirm-desc">
-              Are you sure you want to delete this employee? This action is permanent and cannot be undone.
+              Are you sure you want to delete this employee? This action is permanent and will affect the remote mockapi.io endpoint.
             </p>
             <div className="confirm-buttons">
               <button className="btn btn-secondary" onClick={() => setDeleteConfirmId(null)}>

@@ -5,7 +5,7 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
     name: "",
     email: "",
     role: "",
-    department: "Engineering",
+    department: "Software Engineering",
     salary: "",
     joiningDate: new Date().toISOString().split("T")[0],
     status: "Active"
@@ -21,7 +21,7 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
         name: employee.name || "",
         email: employee.email || "",
         role: employee.role || "",
-        department: employee.department || "Engineering",
+        department: employee.department || "Software Engineering",
         salary: employee.salary || "",
         joiningDate: employee.joiningDate || new Date().toISOString().split("T")[0],
         status: employee.status || "Active"
@@ -136,7 +136,34 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
     }
   };
 
-  const departmentsList = ["Engineering", "Design", "Marketing", "HR", "Finance", "QA"];
+  const defaultDepartments = [
+    "Software Engineering",
+    "Product Management",
+    "QA & Testing",
+    "UI/UX Design",
+    "DevOps & Cloud",
+    "Data Science & AI"
+  ];
+  const departmentsList = [...defaultDepartments];
+  if (formData.department && !departmentsList.includes(formData.department)) {
+    departmentsList.push(formData.department);
+  }
+
+  const defaultRoles = [
+    "Frontend Engineer",
+    "Backend Engineer",
+    "Fullstack Developer",
+    "DevOps Architect",
+    "Data Scientist",
+    "QA Engineer",
+    "Product Manager",
+    "UI/UX Designer"
+  ];
+  const rolesList = [...defaultRoles];
+  if (formData.role && !rolesList.includes(formData.role)) {
+    rolesList.push(formData.role);
+  }
+
   const statusesList = ["Active", "On Leave", "Suspended"];
 
   return (
@@ -193,16 +220,21 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
             <label htmlFor="role" className="form-label">
               Designation / Role <span className="text-red">*</span>
             </label>
-            <input
-              type="text"
+            <select
               id="role"
               name="role"
-              className={`form-input ${isDirty.role && errors.role ? "input-error" : ""}`}
-              placeholder="e.g. Lead React Developer"
+              className={`form-input select-input ${isDirty.role && errors.role ? "input-error" : ""}`}
               value={formData.role}
               onChange={handleInputChange}
               onBlur={handleBlur}
-            />
+            >
+              <option value="" disabled>Select Designation</option>
+              {rolesList.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
             {isDirty.role && errors.role && <span className="error-text">{errors.role}</span>}
           </div>
 

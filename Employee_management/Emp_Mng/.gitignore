@@ -1,0 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# QA Testing Files (kept local, not pushed)
+tests/employee_tests.js
+tests/generate_excel_report.js
+tests/migrate_mockapi.js
+tests/README.md
+src/components/QATestCenter.jsx
+src/components/ConfigurationPage.jsx
+src/components/PayAnalyticsPage.jsx
+src/components/PermissionsPage.jsx
+src/utils/employeeTests.js
+src/utils/employeeHelpers.js
