@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -71,7 +72,48 @@ public class AdvanceTestingTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("portal-shell")));
     }
 
-    @Test
+    @DataProvider(name = "loginCredentials")
+    public Object[][] getLoginCredentials() {
+        return new Object[][] {
+            { "admin@corptech.com", "admin123", "Nijay V" },
+            { "employee@corptech.com", "employee123", "Priya" }
+        };
+    }
+
+    @Test(dataProvider = "loginCredentials", priority = 0)
+    public void testMultiUserLogin(String email, String password, String expectedName) throws InterruptedException {
+        driver.get("http://localhost:5173");
+        
+        WebElement emailInput = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.id("email-input"))
+        );
+        WebElement passwordInput = driver.findElement(By.id("password-input"));
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+
+        emailInput.sendKeys(email);
+        passwordInput.sendKeys(password);
+        submitButton.click();
+
+        // Wait for dashboard shell to load
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("portal-shell")));
+
+        // Verify profile details dynamically
+        if (email.contains("admin")) {
+            WebElement adminMetaName = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.className("admin-name"))
+            );
+            assertTrue("Admin portal should display admin name", adminMetaName.getText().contains(expectedName));
+        } else {
+            WebElement welcomeText = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.className("welcome-text"))
+            );
+            String actualWelcome = welcomeText.getText();
+            System.out.println("Actual welcome text: " + actualWelcome);
+            assertTrue("Employee portal should display welcome message. Expected to contain: " + expectedName + ", actual was: " + actualWelcome, actualWelcome.toUpperCase().contains(expectedName.toUpperCase()));
+        }
+    }
+
+    @Test(priority = 1)
     public void test1AdminLogin() {
         performLogin();
         
@@ -83,7 +125,7 @@ public class AdvanceTestingTest {
         assertTrue("Logged in user should be 'Nijay V'", displayedName.contains("Nijay V"));
     }
 
-    @Test
+    @Test(priority = 2)
     public void test2EmployeeDirectorySearchAndFilter() throws InterruptedException {
         performLogin();
 
@@ -131,7 +173,7 @@ public class AdvanceTestingTest {
         }
     }
 
-    @Test
+    @Test(priority = 3)
     public void test3EmployeeFormValidationAndSubmission() throws InterruptedException {
         performLogin();
 
@@ -193,7 +235,7 @@ public class AdvanceTestingTest {
         System.out.println("E2E Employee creation and form validation test passed successfully!");
     }
 
-    @Test
+    @Test(priority = 4)
     public void test4NavigationAndAccessControl() {
         performLogin();
 
@@ -216,7 +258,7 @@ public class AdvanceTestingTest {
         assertTrue("Permissions tab should be active", driver.findElement(By.xpath("//a[contains(., 'Permissions')]")).getAttribute("class").contains("active"));
     }
 
-    @Test
+    @Test(priority = 5)
     public void test5AnnouncementsBoard() throws InterruptedException {
         performLogin();
 
@@ -259,7 +301,7 @@ public class AdvanceTestingTest {
         assertEquals("Announcement should have been deleted", 0, matchingCards.size());
     }
 
-    @Test
+    @Test(priority = 6)
     public void test6AttendanceCalendarNavigationAndVerification() throws InterruptedException {
         performEmployeeLogin();
 
