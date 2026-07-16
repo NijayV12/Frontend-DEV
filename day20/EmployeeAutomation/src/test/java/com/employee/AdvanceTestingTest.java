@@ -334,6 +334,96 @@ public class AdvanceTestingTest {
         assertTrue("Calendar day cells should contain shift schedule or off-duty statuses", foundShiftOrStatus);
     }
 
+    @Test(priority = 7)
+    public void test7PerformanceEvaluationUpdateAndSync() throws InterruptedException {
+        // 1. Log in as Admin
+        performLogin();
+
+        // 2. Locate and search for employee Priya to open the details view
+        WebElement searchInput = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.className("search-input"))
+        );
+        searchInput.sendKeys("Priya");
+        Thread.sleep(1000);
+
+        WebElement priyaNameLink = wait.until(
+            ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(@class, 'emp-name') and contains(text(), 'Priya')]"))
+        );
+        priyaNameLink.click();
+
+        // 3. Switch to the Performance section in the drawer modal
+        WebElement performanceTab = wait.until(
+            ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Performance')]"))
+        );
+        performanceTab.click();
+
+        // 4. Click the Edit Review button
+        WebElement editReviewBtn = wait.until(
+            ExpectedConditions.elementToBeClickable(By.className("edit-eval-btn"))
+        );
+        editReviewBtn.click();
+
+        // 5. Update rating input, OKR progress, and feedback comments
+        WebElement ratingInput = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.id("edit-rating-input"))
+        );
+        ratingInput.clear();
+        ratingInput.sendKeys("4.7");
+
+        WebElement okrInput = driver.findElement(By.id("edit-okr-input"));
+        // Use keyboard actions to set the range slider value to 85%
+        okrInput.sendKeys(Keys.HOME); // Reset slider to 0
+        for (int i = 0; i < 85; i++) {
+            okrInput.sendKeys(Keys.ARROW_RIGHT);
+        }
+
+        WebElement feedbackTextarea = driver.findElement(By.id("edit-feedback-textarea"));
+        feedbackTextarea.clear();
+        feedbackTextarea.sendKeys("Outstanding performance and leadership on testing infrastructure migration.");
+
+        // 6. Click Save Review
+        WebElement saveReviewBtn = driver.findElement(By.className("save-eval-btn"));
+        saveReviewBtn.click();
+        Thread.sleep(1000);
+
+        // Verify local changes are saved on Admin panel
+        WebElement ratingDisplay = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.className("eval-rating-display"))
+        );
+        assertTrue("Rating should update to 4.7", ratingDisplay.getText().contains("4.7"));
+
+        // Close the drawer modal
+        WebElement closeDrawerBtn = driver.findElement(By.className("drawer-close-btn"));
+        closeDrawerBtn.click();
+        Thread.sleep(1000);
+
+        // 7. Log out from Admin session
+        WebElement logoutBtn = driver.findElement(By.xpath("//button[contains(text(), 'Log Out')]"));
+        logoutBtn.click();
+        Thread.sleep(1000);
+
+        // 8. Log in as employee Priya
+        performEmployeeLogin();
+
+        // 9. Navigate to Performance & Goals tab
+        WebElement employeePerformanceTab = wait.until(
+            ExpectedConditions.presenceOfElementLocated(By.xpath("//a[contains(., 'Performance & Goals')]"))
+        );
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", employeePerformanceTab);
+
+        // 10. Verify that the updated values display correctly in Priya's dashboard
+        WebElement scoreText = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//strong[contains(., '4.7')]"))
+        );
+        assertTrue("Updated score 4.7 should show on Employee dashboard", scoreText.isDisplayed());
+
+        WebElement okrProgressText = driver.findElement(By.xpath("//strong[contains(., '85%')]"));
+        assertTrue("Updated OKR 85% should show on Employee dashboard", okrProgressText.isDisplayed());
+
+        WebElement supervisorComments = driver.findElement(By.xpath("//blockquote[contains(., 'Outstanding performance')]"));
+        assertTrue("Updated manager feedback comment should show on Employee dashboard", supervisorComments.isDisplayed());
+    }
+
     @AfterMethod
     public void tearDown() {
         if (driver != null) {

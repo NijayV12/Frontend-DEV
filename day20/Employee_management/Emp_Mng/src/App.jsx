@@ -68,6 +68,12 @@ function App() {
   });
   const [performanceEvalEmployee, setPerformanceEvalEmployee] = useState(null);
 
+  // Edit Evaluation local states inside Admin drawer
+  const [isEditingFeedback, setIsEditingFeedback] = useState(false);
+  const [editRating, setEditRating] = useState(3.0);
+  const [editOkr, setEditOkr] = useState(50);
+  const [editFeedbackText, setEditFeedbackText] = useState("");
+
   // Fetch employees on component mount
   const fetchEmployees = async () => {
     try {
@@ -182,10 +188,15 @@ function App() {
     setIsFormOpen(true);
   };
 
-  // Open View Details Card
   const handleViewClick = (employee) => {
     setDetailEmployee(employee);
     setDrawerTab("profile");
+    setIsEditingFeedback(false);
+    
+    const f = feedbackList[employee.id] || { rating: 3.0, okrProgress: 50, feedback: "No evaluation recorded yet." };
+    setEditRating(f.rating);
+    setEditOkr(f.okrProgress);
+    setEditFeedbackText(f.feedback);
   };
 
   // Calculate tenure string (months or years)
@@ -668,17 +679,82 @@ function App() {
                         feedback: "No evaluation recorded yet.",
                         lastReviewDate: "N/A"
                       };
+
+                      const handleSaveFeedback = () => {
+                        const updated = {
+                          rating: parseFloat(editRating),
+                          okrProgress: parseInt(editOkr),
+                          feedback: editFeedbackText,
+                          lastReviewDate: new Date().toISOString().split("T")[0]
+                        };
+                        const newList = { ...feedbackList, [detailEmployee.id]: updated };
+                        setFeedbackList(newList);
+                        localStorage.setItem("employeeFeedback", JSON.stringify(newList));
+                        setIsEditingFeedback(false);
+                      };
+
+                      if (isEditingFeedback) {
+                        return (
+                          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                            <div className="form-group">
+                              <label className="form-label" htmlFor="edit-rating-input">Rating (1.0 - 5.0)</label>
+                              <input
+                                id="edit-rating-input"
+                                type="number"
+                                className="form-input"
+                                min="1"
+                                max="5"
+                                step="0.1"
+                                value={editRating}
+                                onChange={(e) => setEditRating(e.target.value)}
+                                style={{ background: "var(--bg-primary)", color: "var(--text-primary)", border: "1px solid var(--border-color)", padding: "10px", borderRadius: "var(--radius-md)" }}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label className="form-label" htmlFor="edit-okr-input">OKR Progress ({editOkr}%)</label>
+                              <input
+                                id="edit-okr-input"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value={editOkr}
+                                onChange={(e) => setEditOkr(e.target.value)}
+                                style={{ width: "100%", accentColor: "var(--accent-cyan)" }}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label className="form-label" htmlFor="edit-feedback-textarea">Feedback Comments</label>
+                              <textarea
+                                id="edit-feedback-textarea"
+                                className="form-input"
+                                style={{ minHeight: "80px", resize: "vertical", background: "var(--bg-primary)", color: "var(--text-primary)", border: "1px solid var(--border-color)", padding: "10px", borderRadius: "var(--radius-md)", fontFamily: "inherit" }}
+                                value={editFeedbackText}
+                                onChange={(e) => setEditFeedbackText(e.target.value)}
+                              />
+                            </div>
+                            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                              <button className="btn btn-primary save-eval-btn" onClick={handleSaveFeedback}>
+                                Save Review
+                              </button>
+                              <button className="btn btn-secondary" onClick={() => setIsEditingFeedback(false)}>
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      }
+
                       return (
                         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                           <div style={{ background: "rgba(255, 255, 255, 0.02)", border: "1px solid var(--border-color)", padding: "16px", borderRadius: "var(--radius-md)" }}>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
                               <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>Performance Rating:</span>
-                              <strong style={{ fontSize: "16px", color: "#f59e0b" }}>⭐ {feedback.rating} / 5.0</strong>
+                              <strong style={{ fontSize: "16px", color: "#f59e0b" }} className="eval-rating-display">⭐ {feedback.rating} / 5.0</strong>
                             </div>
                             <div style={{ marginBottom: "12px" }}>
                               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "var(--text-secondary)", marginBottom: "4px" }}>
                                 <span>OKR Progress:</span>
-                                <strong>{feedback.okrProgress}%</strong>
+                                <strong className="eval-okr-display">{feedback.okrProgress}%</strong>
                               </div>
                               <div style={{ width: "100%", height: "6px", background: "var(--bg-tertiary)", borderRadius: "3px", overflow: "hidden" }}>
                                 <div style={{ width: `${feedback.okrProgress}%`, height: "100%", background: "linear-gradient(90deg, #10b981, #06b6d4)", borderRadius: "3px" }}></div>
@@ -690,10 +766,22 @@ function App() {
                           </div>
                           <div>
                             <span style={{ fontSize: "12px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>MANAGER FEEDBACK</span>
-                            <blockquote style={{ background: "rgba(6, 182, 212, 0.05)", borderLeft: "3px solid var(--accent-cyan)", padding: "12px", borderRadius: "0 var(--radius-md) var(--radius-md) 0", fontSize: "13px", color: "var(--text-secondary)", fontStyle: "italic", margin: 0 }}>
+                            <blockquote style={{ background: "rgba(6, 182, 212, 0.05)", borderLeft: "3px solid var(--accent-cyan)", padding: "12px", borderRadius: "0 var(--radius-md) var(--radius-md) 0", fontSize: "13px", color: "var(--text-secondary)", fontStyle: "italic", margin: 0 }} className="eval-comments-display">
                               "{feedback.feedback}"
                             </blockquote>
                           </div>
+                          <button
+                            className="btn btn-secondary w-full edit-eval-btn"
+                            onClick={() => {
+                              setEditRating(feedback.rating);
+                              setEditOkr(feedback.okrProgress);
+                              setEditFeedbackText(feedback.feedback);
+                              setIsEditingFeedback(true);
+                            }}
+                            style={{ marginTop: "8px" }}
+                          >
+                            ✏️ Edit Review
+                          </button>
                         </div>
                       );
                     })()}
