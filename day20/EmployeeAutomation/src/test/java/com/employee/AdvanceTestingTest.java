@@ -2,9 +2,9 @@ package com.employee;
 
 import java.time.Duration;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
@@ -21,7 +21,7 @@ public class AdvanceTestingTest {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         // Set the path to the pre-approved chromedriver on D:\
         System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
@@ -292,7 +292,7 @@ public class AdvanceTestingTest {
         assertTrue("Calendar day cells should contain shift schedule or off-duty statuses", foundShiftOrStatus);
     }
 
-    @After
+    @AfterMethod
     public void tearDown() {
         if (driver != null) {
             driver.quit();

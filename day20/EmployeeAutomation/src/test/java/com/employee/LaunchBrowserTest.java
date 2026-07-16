@@ -1,7 +1,7 @@
 package com.employee;
 
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import org.testng.annotations.Test;
+import static org.testng.Assert.assertTrue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -21,7 +21,7 @@ public class LaunchBrowserTest {
             // Print and verify the title
             String title = driver.getTitle();
             System.out.println("Browser launched successfully. Page title is: " + title);
-            assertTrue("Expected page title to contain 'Google'", title.toLowerCase().contains("google"));
+            assertTrue(title.toLowerCase().contains("google"), "Expected page title to contain 'Google'");
         } finally {
             // Close browser session
             driver.quit();
