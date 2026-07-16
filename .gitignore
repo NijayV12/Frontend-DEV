@@ -37,3 +37,7 @@ dist-ssr/
 
 # Runner utilities
 /EmployeeAutomation/
+
+# Maven target directories
+target/
+**/target/
