@@ -34,3 +34,9 @@ src/components/PayAnalyticsPage.jsx
 src/components/PermissionsPage.jsx
 src/utils/employeeTests.js
 src/utils/employeeHelpers.js
+src/components/DepartmentHubPage.jsx
+src/components/PerformancePage.jsx
+src/components/Login.jsx
+src/components/EmployeeDashboard.jsx
+src/components/LeaveApprovalPage.jsx
+src/components/AnnouncementsPage.jsx

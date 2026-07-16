@@ -15,7 +15,7 @@ const employeeService = {
   },
 
   createEmployee: async (employeeData) => {
-    const response = await axios.post(API_URL, employeeData);
+    const response = await axios.post(API_URL, employeeData); 
     return response.data;
   },
 
@@ -28,6 +28,6 @@ const employeeService = {
     const response = await axios.delete(`${API_URL}/${id}`);
     return response.data;
   }
-};
+};    
 
 export default employeeService;

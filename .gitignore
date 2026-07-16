@@ -33,3 +33,7 @@ dist-ssr/
 # Agent files
 .agents/
 .gemini/
+/employee-management
+
+# Runner utilities
+/EmployeeAutomation/

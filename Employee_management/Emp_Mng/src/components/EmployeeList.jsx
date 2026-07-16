@@ -9,13 +9,18 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
   const departments = ["All", ...new Set(employees.map((emp) => emp.department))];
   const statuses = ["All", "Active", "On Leave", "Suspended"];
 
-  // Filter logic
   const filteredEmployees = employees.filter((emp) => {
+    const nameVal = String(emp.name || "").toLowerCase();
+    const roleVal = String(emp.role || emp.Role || "").toLowerCase();
+    const emailVal = String(emp.email || "").toLowerCase();
+    const idVal = String(emp.id || "").toLowerCase();
+    const query = searchTerm.toLowerCase();
+
     const matchesSearch =
-      emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.id.toLowerCase().includes(searchTerm.toLowerCase());
+      nameVal.includes(query) ||
+      roleVal.includes(query) ||
+      emailVal.includes(query) ||
+      idVal.includes(query);
     
     const matchesDept = selectedDept === "All" || emp.department === selectedDept;
     const matchesStatus = selectedStatus === "All" || emp.status === selectedStatus;
@@ -60,9 +65,10 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
   };
 
   const getInitials = (name) => {
+    if (!name || typeof name !== "string") return "EE";
     return name
       .split(" ")
-      .map((n) => n[0])
+      .map((n) => n[0] || "")
       .slice(0, 2)
       .join("")
       .toUpperCase();

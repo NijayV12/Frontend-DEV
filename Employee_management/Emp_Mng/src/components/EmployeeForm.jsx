@@ -5,7 +5,7 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
     name: "",
     email: "",
     role: "",
-    department: "Software Engineering",
+    department: "Engineering",
     salary: "",
     joiningDate: new Date().toISOString().split("T")[0],
     status: "Active"
@@ -21,7 +21,7 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
         name: employee.name || "",
         email: employee.email || "",
         role: employee.role || "",
-        department: employee.department || "Software Engineering",
+        department: employee.department || "Engineering",
         salary: employee.salary || "",
         joiningDate: employee.joiningDate || new Date().toISOString().split("T")[0],
         status: employee.status || "Active"
@@ -137,12 +137,13 @@ function EmployeeForm({ employee, onSave, onClose, isSubmitting }) {
   };
 
   const defaultDepartments = [
-    "Software Engineering",
-    "Product Management",
-    "QA & Testing",
-    "UI/UX Design",
+    "Engineering",
     "DevOps & Cloud",
-    "Data Science & AI"
+    "QA & Testing",
+    "Product & Design",
+    "Human Resources",
+    "Finance & Payroll",
+    "Sales & Marketing"
   ];
   const departmentsList = [...defaultDepartments];
   if (formData.department && !departmentsList.includes(formData.department)) {
