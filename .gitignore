@@ -36,7 +36,7 @@ dist-ssr/
 /employee-management
 
 # Runner utilities
-/EmployeeAutomation/
+day20_FE_AT/EmployeeAutomation/
 
 # Maven target directories
 target/
