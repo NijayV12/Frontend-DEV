@@ -2,7 +2,6 @@ package com.cucumber.demo.stepdefinitions;
 
 import java.time.Duration;
 import java.util.logging.Level;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,10 +19,20 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import com.cucumber.demo.pages.PortalLoginPage;
+import com.cucumber.demo.pages.PortalDashboardPage;
+import com.cucumber.demo.pages.HelpdeskPage;
+import com.cucumber.demo.pages.LearningPage;
+
 public class EmployeeWorkspaceSteps {
 
     private WebDriver driver;
     private WebDriverWait wait;
+    
+    private PortalLoginPage loginPage;
+    private PortalDashboardPage dashboardPage;
+    private HelpdeskPage helpdeskPage;
+    private LearningPage learningPage;
 
     @Given("the employee is logged in and on the employee dashboard")
     public void the_employee_is_logged_in_and_on_the_employee_dashboard() {
@@ -34,7 +43,6 @@ public class EmployeeWorkspaceSteps {
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         
-        // Enable browser log capturing
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         options.setCapability("goog:loggingPrefs", logPrefs);
@@ -43,75 +51,40 @@ public class EmployeeWorkspaceSteps {
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         
+        // Initialize page objects
+        loginPage = new PortalLoginPage(driver, wait);
+        dashboardPage = new PortalDashboardPage(driver, wait);
+        helpdeskPage = new HelpdeskPage(driver, wait);
+        learningPage = new LearningPage(driver, wait);
+        
         driver.get("http://localhost:5173");
         
-        WebElement emailInput = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(By.id("email-input"))
-        );
-        WebElement passwordInput = driver.findElement(By.id("password-input"));
-        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
-
-        emailInput.clear();
-        emailInput.sendKeys("employee@corptech.com");
-        passwordInput.clear();
-        passwordInput.sendKeys("employee123");
-        
-        submitButton.click();
-
-        // Wait for dashboard welcome text to load
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("welcome-text")));
+        loginPage.login("employee@corptech.com", "employee123");
     }
 
     @When("the employee navigates to the IT\\/HR Helpdesk tab")
     public void the_employee_navigates_to_the_it_hr_helpdesk_tab() throws InterruptedException {
-        WebElement helpdeskTab = wait.until(
-            ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(., 'IT/HR Helpdesk')]"))
-        );
-        helpdeskTab.click();
-        Thread.sleep(1000); // Allow view to transition
+        dashboardPage.navigateToHelpdesk();
     }
 
     @When("the employee submits a support ticket with title {string} and description {string}")
     public void the_employee_submits_a_support_ticket_with_title_and_description(String title, String description) throws InterruptedException {
-        WebElement titleInput = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Summarize the issue...']"))
-        );
-        WebElement descTextarea = driver.findElement(By.xpath("//textarea[@placeholder='Describe the issue in detail...']"));
-        WebElement submitBtn = driver.findElement(By.xpath("//button[text()='Submit Ticket']"));
-
-        titleInput.click();
-        titleInput.clear();
-        titleInput.sendKeys(title);
-        
-        descTextarea.click();
-        descTextarea.clear();
-        descTextarea.sendKeys(description);
-        
-        System.out.println("DEBUG - Title input value: " + titleInput.getAttribute("value"));
-        System.out.println("DEBUG - Desc textarea value: " + descTextarea.getAttribute("value"));
-        
-        Thread.sleep(500);
-        submitBtn.click();
-        Thread.sleep(2000); // Allow local array update
+        helpdeskPage.submitTicket(title, description);
     }
 
     @Then("the new support ticket {string} should be listed under active tickets")
     public void the_new_support_ticket_should_be_listed_under_active_tickets(String title) {
         try {
-            WebElement ticketTitle = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//strong[contains(text(), '" + title + "')]"))
-            );
+            WebElement ticketTitle = helpdeskPage.getTicketElement(title);
             assertTrue("Newly created ticket should be displayed in the list", ticketTitle.isDisplayed());
         } catch (Exception e) {
-            // Print active tickets container text for diagnostics
             try {
-                WebElement container = driver.findElement(By.xpath("//div[./h3[contains(., 'Active Support Tickets')]]"));
+                WebElement container = helpdeskPage.getActiveTicketsContainer();
                 System.out.println("DEBUG - ACTIVE TICKETS CONTAINER TEXT:\n" + container.getText());
             } catch (Exception ex) {
                 System.out.println("DEBUG - Could not locate active tickets container: " + ex.getMessage());
             }
             
-            // Print browser console logs
             try {
                 LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
                 System.out.println("DEBUG - BROWSER CONSOLE LOGS:");
@@ -127,27 +100,17 @@ public class EmployeeWorkspaceSteps {
 
     @When("the employee navigates to the Learning & Compliance tab")
     public void the_employee_navigates_to_the_learning_compliance_tab() throws InterruptedException {
-        WebElement learningTab = wait.until(
-            ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(., 'Learning & Compliance') and contains(@class, 'nav-item')]"))
-        );
-        learningTab.click();
-        Thread.sleep(1000); // Allow transition
+        dashboardPage.navigateToLearning();
     }
 
     @When("the employee marks the in-progress course {string} as completed")
     public void the_employee_marks_the_in_progress_course_as_completed(String courseName) throws InterruptedException {
-        WebElement markCompletedBtn = wait.until(
-            ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(., '" + courseName + "')]//button[contains(text(), 'Mark Completed')]"))
-        );
-        markCompletedBtn.click();
-        Thread.sleep(1000);
+        learningPage.markCourseAsCompleted(courseName);
     }
 
     @Then("the course {string} status should show as {string}")
     public void the_course_status_should_show_as(String courseName, String status) {
-        WebElement statusLabel = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(., '" + courseName + "')]//span[contains(text(), '" + status + "')]"))
-        );
+        WebElement statusLabel = learningPage.getCourseStatusElement(courseName, status);
         assertTrue("Course status should be displayed as Completed", statusLabel.isDisplayed());
         driver.quit();
     }

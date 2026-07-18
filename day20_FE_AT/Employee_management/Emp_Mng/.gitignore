@@ -26,6 +26,8 @@ dist-ssr
 # QA Testing Files (kept local, not pushed)
 tests/employee_tests.js
 tests/generate_excel_report.js
+tests/generate_cucumber_excel_report.js
+tests/generate_combined_report.js
 tests/migrate_mockapi.js
 tests/README.md
 src/components/QATestCenter.jsx

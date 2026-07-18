@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDept, setSelectedDept] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [deptOpen, setDeptOpen] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+  const deptRef = useRef(null);
+  const statusRef = useRef(null);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (deptRef.current && !deptRef.current.contains(e.target)) setDeptOpen(false);
+      if (statusRef.current && !statusRef.current.contains(e.target)) setStatusOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   // Get list of unique departments for filter dropdown
   const departments = ["All", ...new Set(employees.map((emp) => emp.department))];
@@ -89,9 +103,9 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
 
       {/* Stats Cards Row */}
       <div className="stats-grid">
-        <div className="stats-card">
-          <div className="stats-icon bg-indigo">
-            <svg className="stats-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-secondary)" }}>
+        <div className="stats-card accent-cyan">
+          <div className="stats-icon bg-indigo icon-bg-cyan">
+            <svg className="stats-icon-svg cyan" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
               <circle cx="9" cy="7" r="4" />
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -103,9 +117,9 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
             <span className="stats-val">{totalCount}</span>
           </div>
         </div>
-        <div className="stats-card">
-          <div className="stats-icon bg-emerald">
-            <svg className="stats-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-secondary)" }}>
+        <div className="stats-card accent-emerald">
+          <div className="stats-icon bg-emerald icon-bg-emerald">
+            <svg className="stats-icon-svg emerald" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
               <polyline points="22 4 12 14.01 9 11.01" />
             </svg>
@@ -115,9 +129,9 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
             <span className="stats-val">{activeCount} <span className="stats-percent">({totalCount ? Math.round((activeCount / totalCount) * 100) : 0}%)</span></span>
           </div>
         </div>
-        <div className="stats-card">
-          <div className="stats-icon bg-cyan">
-            <svg className="stats-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-secondary)" }}>
+        <div className="stats-card accent-purple">
+          <div className="stats-icon bg-cyan icon-bg-purple">
+            <svg className="stats-icon-svg purple" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="3" width="7" height="9" />
               <rect x="14" y="3" width="7" height="5" />
               <rect x="14" y="12" width="7" height="9" />
@@ -129,9 +143,9 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
             <span className="stats-val">{deptCount}</span>
           </div>
         </div>
-        <div className="stats-card">
-          <div className="stats-icon bg-purple">
-            <svg className="stats-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--text-secondary)" }}>
+        <div className="stats-card accent-amber">
+          <div className="stats-icon bg-purple icon-bg-amber">
+            <svg className="stats-icon-svg amber" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="1" x2="12" y2="23" />
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
@@ -165,34 +179,79 @@ function EmployeeList({ employees, onEdit, onDelete, onView, onAddClick }) {
         </div>
 
         <div className="filter-group">
-          <div className="filter-item">
-            <label>Department</label>
-            <select
-              value={selectedDept}
-              onChange={(e) => setSelectedDept(e.target.value)}
-              className="select-input"
+          {/* Department custom dropdown */}
+          <div className="custom-dropdown-wrap" ref={deptRef} style={{ position: "relative" }}>
+            <span style={{ fontSize: "10px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Department</span>
+            <button
+              className="custom-dropdown-trigger"
+              onClick={() => setDeptOpen(!deptOpen)}
+              type="button"
             >
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
-                </option>
-              ))}
-            </select>
+              <span>{selectedDept}</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "transform 0.2s", transform: deptOpen ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0 }}>
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            {deptOpen && (
+              <div className="custom-dropdown-menu">
+                {departments.map((dept) => (
+                  <button
+                    key={dept}
+                    type="button"
+                    className={`custom-dropdown-item ${selectedDept === dept ? "selected" : ""}`}
+                    onClick={() => { setSelectedDept(dept); setDeptOpen(false); }}
+                  >
+                    {selectedDept === dept && (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    )}
+                    {dept}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          <div className="filter-item">
-            <label>Status</label>
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="select-input"
+          {/* Status custom dropdown */}
+          <div className="custom-dropdown-wrap" ref={statusRef} style={{ position: "relative" }}>
+            <span style={{ fontSize: "10px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>Status</span>
+            <button
+              className="custom-dropdown-trigger"
+              onClick={() => setStatusOpen(!statusOpen)}
+              type="button"
             >
-              {statuses.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
+              <span>{selectedStatus}</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "transform 0.2s", transform: statusOpen ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0 }}>
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            {statusOpen && (
+              <div className="custom-dropdown-menu">
+                {statuses.map((status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    className={`custom-dropdown-item ${selectedStatus === status ? "selected" : ""}`}
+                    onClick={() => { setSelectedStatus(status); setStatusOpen(false); }}
+                  >
+                    {selectedStatus === status && (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    )}
+                    <span style={{
+                      display: "inline-block",
+                      width: "6px", height: "6px",
+                      borderRadius: "50%",
+                      background: status === "Active" ? "#10b981" : status === "On Leave" ? "#f59e0b" : status === "Suspended" ? "#ef4444" : "var(--text-muted)",
+                      flexShrink: 0
+                    }}/>
+                    {status}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
